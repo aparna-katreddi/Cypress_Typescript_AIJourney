@@ -39,19 +39,20 @@ jobs:
         with:
           name: cypress-videos
           path: cypress/videos
-#debug step
+
+      # Debug step to check the report files
       - name: Debug Report Files
         if: always()
         run: ls -la cypress/reports/AI_Journey_Reports
 
-# Extract the report filename dynamically and send it to Slack
+      # Extract the report filename dynamically
       - name: Extract Report Filename
         if: always()
         id: extract-report
         run: |
           REPORT_FILE=$(ls cypress/reports/AI_Journey_Reports/ | grep -E '^AI_Journey_Test_Results_Report.*\.html$' | tail -n 1)
           echo "Report filename is $REPORT_FILE"
-          echo "report_filename=$REPORT_FILE" >> $GITHUB_OUTPUT
+          echo "report_filename=$REPORT_FILE" >> $GITHUB_ENV  # Using $GITHUB_ENV for environment variable
 
       - name: Upload Cypress Mochawesome HTML Report
         if: always()
@@ -79,23 +80,18 @@ jobs:
           git commit -m "Add report from ${{ github.run_id }} at $(date)"
           git push origin gh-pages
 
-
-  
+      # Send Slack Notification
       - name: Send Slack Notification
-  if: always()
-  run: |
-    # Ensure the report filename is available
-    REPORT_FILE="${{ steps.extract-report.outputs.report_filename }}"
-    REPORT_URL="https://${GITHUB_ACTOR}.github.io/Cypress_Typescript_AIJourney/reports/${REPORT_FILE}"
+        if: always()
+        run: |
+          # Ensure the report filename is available
+          REPORT_FILE="${{ env.report_filename }}"
+          REPORT_URL="https://${GITHUB_ACTOR}.github.io/Cypress_Typescript_AIJourney/reports/${REPORT_FILE}"
 
-    # Print to make sure the URL is correct
-    echo "Full report URL: $REPORT_URL"
+          # Print to make sure the URL is correct
+          echo "Full report URL: $REPORT_URL"
 
-    # Send the report URL to Slack
-    curl -X POST -H 'Content-type: application/json' \
-    --data "{\"text\": \"✅ Cypress Test Run Completed! View the latest test report: $REPORT_URL\"}" \
-    ${{ secrets.SLACK_WEBHOOK_URL }}
-
-
-
-
+          # Send the report URL to Slack
+          curl -X POST -H 'Content-type: application/json' \
+          --data "{\"text\": \"✅ Cypress Test Run Completed! View the latest test report: $REPORT_URL\"}" \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
