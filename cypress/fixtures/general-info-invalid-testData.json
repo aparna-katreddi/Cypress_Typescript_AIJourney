@@ -1,0 +1,42 @@
+{
+  "generalInfoInvalidTestData":[
+
+    {
+      "name"  :"" ,                 
+      "organization": "Missing Name",              
+      "email": "user2@example.com",                      
+      "region": "APAC"                                           
+    },
+  
+    {
+      "name": "Missing Organization",                      
+      "organization": "",              
+      "email": "user2@example.com",                      
+      "region": "APAC"                                        
+    },
+        
+      {
+        "name": "Invalid Email without @",                      
+        "organization": "Organization A",              
+        "email": "InvalidEmail",                      
+        "region": "APAC"                      
+      },
+     
+      {
+        "name": "Missing Email",                      
+        "organization": "Organization A",              
+        "email": "",                      
+        "region": "APAC"                      
+      },
+     
+      {
+        "name": "Missing Region",                      
+        "organization": "Organization A",              
+        "email": "user2@example.com",                      
+        "region": ""                      
+      }
+  
+      
+  
+    ]
+  }

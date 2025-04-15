@@ -1,0 +1,32 @@
+# .gitignore
+
+# Node.js
+node_modules/
+package-lock.json
+
+# Cypress stuff
+cypress/videos/
+cypress/screenshots/
+cypress/reports/
+cypress/downloads/
+
+# Mochawesome artifacts
+mochawesome-report/
+
+
+# Build output
+ignoreJS/
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Mac system files
+.DS_Store
+
+# VS Code settings (optional)
+.vscode/

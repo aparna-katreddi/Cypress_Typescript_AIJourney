@@ -1,0 +1,108 @@
+{
+  "allRegionValidTestData":[ 
+  
+{
+    "name": "RegionUS RiskHigh SensitiveYes",                      
+    "organization": "Organization A",              
+    "email": "user2@example.com",                      
+    "region": "US",                     
+    "sensitiveData": "No",              
+    "riskLevel": "High",                  
+    "securityMeasures": "Encryption",           
+    "encryption": "Yes",                 
+    "dataResidencyCompliance": "",    
+    "riskAssessment": "Yes",             
+    "audit": "Yes"                       
+  },
+
+  {
+    "name": "RegionUS RiskHigh SensitiveYes",                      
+    "organization": "Organization A",              
+    "email": "user2@example.com",                      
+    "region": "US",                     
+    "sensitiveData": "Yes",              
+    "riskLevel": "Low",                  
+    "securityMeasures": "Encryption",           
+    "encryption": "Yes",                 
+    "dataResidencyCompliance": "",    
+    "riskAssessment": "No",             
+    "audit": "Yes"                       
+  },
+     
+  {
+      "name": "RegionUS RiskHigh SensitiveYes",                      
+      "organization": "Organization A",              
+      "email": "user2@example.com",                      
+      "region": "US",                     
+      "sensitiveData": "Yes",              
+      "riskLevel": "High",                  
+      "securityMeasures": "Encryption",           
+      "encryption": "Yes",                 
+      "dataResidencyCompliance": "",    
+      "riskAssessment": "Yes",             
+      "audit": "No"                       
+  },
+  
+  
+
+  
+    {
+      "name": "RegionUS RiskHigh SensitiveYes",                      
+      "organization": "Organization A",              
+      "email": "user2@example.com",                      
+      "region": "APAC",                     
+      "sensitiveData": "No",              
+      "riskLevel": "High",                  
+      "securityMeasures": "Encryption",           
+      "encryption": "Yes",                 
+      "dataResidencyCompliance": "",    
+      "riskAssessment": "Yes",             
+      "audit": "Yes"                       
+    },
+  
+    {
+      "name": "RegionUS RiskHigh SensitiveYes",                      
+      "organization": "Organization A",              
+      "email": "user2@example.com",                      
+      "region": "APAC",                     
+      "sensitiveData": "Yes",              
+      "riskLevel": "Low",                  
+      "securityMeasures": "Encryption",           
+      "encryption": "Yes",                 
+      "dataResidencyCompliance": "",    
+      "riskAssessment": "No",             
+      "audit": "Yes"                       
+    },
+       
+    {
+        "name": "RegionUS RiskHigh SensitiveYes",                      
+        "organization": "Organization A",              
+        "email": "user2@example.com",                      
+        "region": "APAC",                     
+        "sensitiveData": "Yes",              
+        "riskLevel": "High",                  
+        "securityMeasures": "Encryption",           
+        "encryption": "Yes",                 
+        "dataResidencyCompliance": "",    
+        "riskAssessment": "Yes",             
+        "audit": "No"                       
+    },
+
+    {
+      "name": "RegionUS RiskHigh SensitiveYes",                      
+      "organization": "Organization A",              
+      "email": "user2@example.com",                      
+      "region": "EU",                     
+      "sensitiveData": "No",              
+      "riskLevel": "High",                  
+      "securityMeasures": "Encryption",           
+      "encryption": "Yes",                 
+      "dataResidencyCompliance": "Yes",    
+      "riskAssessment": "Yes",             
+      "audit": "Yes"                       
+    }
+
+
+
+]
+}

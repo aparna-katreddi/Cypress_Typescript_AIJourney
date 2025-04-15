@@ -1,0 +1,67 @@
+name: Trigger Cypress Tests from GitHub Actions
+# This workflow is triggered manually to run Cypress tests.
+
+on:
+  workflow_dispatch:  # 👈 allows manual trigger
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write  # 👈 Needed for pushing to gh-pages
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Cypress tests
+        run: npx cypress run
+
+      - name: Upload Cypress Screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+
+      - name: Upload Cypress Videos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos
+          path: cypress/videos
+
+      - name: Upload Cypress Mochawesome HTML Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mochawesome-report
+          path: cypress/reports/AI_Journey_Reports/*.html
+
+      - name: Upload HTML report to gh-pages
+        if: always()  # 👈 ensures this step always runs, even if Cypress tests fail
+        run: |
+          mkdir -p temp-reports
+          cp cypress/reports/AI_Journey_Reports/*.html temp-reports/
+
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+          git fetch
+          git switch gh-pages || git checkout --orphan gh-pages
+
+          mkdir -p reports
+          mv temp-reports/*.html reports/
+
+          git add reports
+          git commit -m "Add report from ${{ github.run_id }} at $(date)"
+          git push origin gh-pages
