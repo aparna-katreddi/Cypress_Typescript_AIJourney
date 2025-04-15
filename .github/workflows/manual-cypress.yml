@@ -48,7 +48,7 @@ jobs:
           path: cypress/reports/AI_Journey_Reports/*.html
 
       - name: Upload HTML report to gh-pages
-        if: success()
+        if: always()  # 👈 ensures this step always runs, even if Cypress tests fail
         run: |
           mkdir -p temp-reports
           cp cypress/reports/AI_Journey_Reports/*.html temp-reports/
