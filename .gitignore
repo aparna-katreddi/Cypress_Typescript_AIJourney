@@ -14,6 +14,8 @@ cypress/downloads/
 mochawesome-report/
 *.html
 *.json
+# ...but don't ignore tsconfig.json
+!tsconfig.json
 
 # Build output
 ignoreJS/
