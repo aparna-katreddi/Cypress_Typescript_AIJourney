@@ -65,3 +65,19 @@ jobs:
           git add reports
           git commit -m "Add report from ${{ github.run_id }} at $(date)"
           git push origin gh-pages
+      - name: Notify Slack with Test Report
+        if: success()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{
+            "text": "*✅ Cypress Test Report is Ready!*",
+            "attachments": [
+              {
+                "color": "#36a64f",
+                "title": "View HTML Report",
+                "title_link": "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/reports/AI_Journey_Test_Results_Report_${{ github.run_id }}.html",
+                "footer": "GitHub Actions",
+                "ts": '"$(date +%s)"'
+              }
+            ]
+          }' ${{ secrets.SLACK_WEBHOOK_URL }}
