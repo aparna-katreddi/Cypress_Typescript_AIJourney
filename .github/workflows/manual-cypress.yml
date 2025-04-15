@@ -81,15 +81,12 @@ jobs:
 
 
   
-      
-
-
-  # Send the report link to Slack
       - name: Send Slack Notification
-        if: always()
-        run: |
-    # Define the report URL dynamically using GITHUB_ACTOR
-    REPORT_URL="https://${{ github.actor }}.github.io/Cypress_Typescript_AIJourney/reports/${{ steps.extract-report.outputs.report_filename }}"
+  if: always()
+  run: |
+    # Ensure the report filename is available
+    REPORT_FILE="${{ steps.extract-report.outputs.report_filename }}"
+    REPORT_URL="https://${GITHUB_ACTOR}.github.io/Cypress_Typescript_AIJourney/reports/${REPORT_FILE}"
 
     # Print to make sure the URL is correct
     echo "Full report URL: $REPORT_URL"
@@ -98,6 +95,7 @@ jobs:
     curl -X POST -H 'Content-type: application/json' \
     --data "{\"text\": \"✅ Cypress Test Run Completed! View the latest test report: $REPORT_URL\"}" \
     ${{ secrets.SLACK_WEBHOOK_URL }}
+
 
 
 
