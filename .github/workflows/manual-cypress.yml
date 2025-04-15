@@ -79,7 +79,8 @@ jobs:
 
   # Send the report link to Slack
       - name: Send Slack Notification
-        if: success()
+       # if: success()
+        if: always()
         run: |
           curl -X POST -H 'Content-type: application/json' \
           --data '{"text": "Cypress Test Run Completed! View the latest test report: https://git-user.github.io/Cypress_Typescript_AIJourney/reports/${{ steps.extract-report.outputs.report_filename }}"}' \
