@@ -66,7 +66,7 @@ jobs:
           git commit -m "Add report from ${{ github.run_id }} at $(date)"
           git push origin gh-pages
       - name: Notify Slack with Test Report
-        if: success()
+        if: always() 
         run: |
           curl -X POST -H 'Content-type: application/json' \
           --data '{
