@@ -41,6 +41,7 @@ jobs:
           path: cypress/videos
 #debug step
       - name: Debug Report Files
+        if: always()
         run: ls -la cypress/reports/AI_Journey_Reports
 
 # Extract the report filename dynamically and send it to Slack
@@ -85,9 +86,18 @@ jobs:
 
   # Send the report link to Slack
       - name: Send Slack Notification
-       # if: success()
         if: always()
         run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{"text": "Cypress Test Run Completed! View the latest test report: https://git-user.github.io/Cypress_Typescript_AIJourney/reports/${{ steps.extract-report.outputs.report_filename }}"}' \
-          ${{ secrets.SLACK_WEBHOOK_URL }}
+    # Define the report URL dynamically using GITHUB_ACTOR
+    REPORT_URL="https://${{ github.actor }}.github.io/Cypress_Typescript_AIJourney/reports/${{ steps.extract-report.outputs.report_filename }}"
+
+    # Print to make sure the URL is correct
+    echo "Full report URL: $REPORT_URL"
+
+    # Send the report URL to Slack
+    curl -X POST -H 'Content-type: application/json' \
+    --data "{\"text\": \"✅ Cypress Test Run Completed! View the latest test report: $REPORT_URL\"}" \
+    ${{ secrets.SLACK_WEBHOOK_URL }}
+
+
+
