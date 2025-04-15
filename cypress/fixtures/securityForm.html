@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Security Questionnaire</title>
+  <style>
+    .section { display: none; }
+    .active { display: block; }
+    .warning { color: red; }
+  </style>
+</head>
+<body>
+  <div id="form-container">
+    <!-- General Information Section -->
+    <div id="general-info" class="section active">
+      <h2>General Information</h2>
+      <label>AI Deployment Name: <input type="text" id="deploymentName" /></label><br />
+      <label>Organization Name: <input type="text" id="organizationName" /></label><br />
+      <label>Email Address: <input type="email" id="emailAddress" /></label><br />
+      <label>Deployment Region:
+        <select id="deploymentRegion">
+          <option value="">Select a region</option>
+          <option value="US">US</option>
+          <option value="EU">EU</option>
+          <option value="APAC">APAC</option>
+        </select>
+      </label><br />
+      <button onclick="validateGeneralInfo()">Next</button>
+      <p id="general-info-warning" class="warning"></p>
+    </div>
+
+    <!-- AI Risk Management Section -->
+    <div id="ai-risk" class="section">
+      <h2>AI Risk Management</h2>
+      <label>Does your AI system handle sensitive data?
+        <select id="sensitiveData">
+          <option value="">Select</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </label><br />
+      <label>Risk Level:
+        <select id="riskLevel">
+          <option value="">Select</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+      </label><br />
+      <button onclick="handleRiskSelection()">Next</button>
+      <p id="ai-risk-warning" class="warning"></p>
+    </div>
+
+    <!-- Data Security Section (Conditional) -->
+    <div id="data-security" class="section">
+      <h2>Data Security</h2>
+      <label>Security Measures: <textarea id="securityMeasures"></textarea></label><br />
+      <label>Encryption Implemented?
+        <select id="encryption">
+          <option value="">Select</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </label><br />
+      <label>Data Residency Compliance (required for EU region):
+        <select id="dataResidencyCompliance">
+          <option value="">Select</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </label><br />
+      <button onclick="validateDataSecurity()">Next</button>
+      <p id="data-security-warning" class="warning"></p>
+    </div>
+
+    <!-- Compliance Measures Section -->
+    <div id="compliance" class="section">
+      <h2>Compliance Measures</h2>
+      <label>Formal Risk Assessment Conducted?
+        <select id="riskAssessment">
+          <option value="">Select</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </label><br />
+      <label>AI Models Audited for Compliance?
+        <select id="audit">
+          <option value="">Select</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </label><br />
+      <button onclick="showSummary()">Submit</button>
+      <p id="compliance-warning" class="warning"></p>
+    </div>
+
+    <!-- Summary Section -->
+    <div id="summary" class="section">
+      <h2>Summary</h2>
+      <div id="summaryContent"></div>
+      <button onclick="submitForm()">Finish</button>
+    </div>
+  </div>
+
+  <script>
+    function showSection(sectionId) {
+      document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+      document.getElementById(sectionId).classList.add('active');
+    }
+
+    function validateGeneralInfo() {
+      const deploymentName = document.getElementById('deploymentName').value;
+      const organizationName = document.getElementById('organizationName').value;
+      const email = document.getElementById('emailAddress').value;
+      const region = document.getElementById('deploymentRegion').value;
+      const warning = document.getElementById('general-info-warning');
+
+      warning.innerText = '';
+      if (!deploymentName || !organizationName || !email.includes('@') || !region) {
+        warning.innerText = 'Please fill out all fields and provide a valid email.';
+      } else {
+        showSection('ai-risk');
+      }
+    }
+
+    function handleRiskSelection() {
+      const sensitiveData = document.getElementById('sensitiveData').value;
+      const riskLevel = document.getElementById('riskLevel').value;
+      const warning = document.getElementById('ai-risk-warning');
+
+      warning.innerText = '';
+      if (!sensitiveData || !riskLevel) {
+        warning.innerText = 'Please select both Sensitive Data and Risk Level.';
+      } else if (sensitiveData === 'Yes' || riskLevel === 'High') {
+        showSection('data-security');
+      } else {
+        showSection('compliance');
+      }
+    }
+
+    function validateDataSecurity() {
+      const securityMeasures = document.getElementById('securityMeasures').value;
+      const encryption = document.getElementById('encryption').value;
+      const dataResidencyCompliance = document.getElementById('dataResidencyCompliance').value;
+      const region = document.getElementById('deploymentRegion').value;
+      const warning = document.getElementById('data-security-warning');
+
+      warning.innerText = '';
+      if (region === 'EU' && dataResidencyCompliance !== 'Yes') {
+        warning.innerText = 'Data Residency Compliance is required for EU region.';
+      } else if (!securityMeasures) {
+        warning.innerText = 'Security Measures cannot be empty.';
+      } else if (encryption === 'No') {
+        warning.innerText = 'Encryption is recommended for sensitive data.';
+      } else {
+        showSection('compliance');
+      }
+    }
+
+    function showSummary() {
+      const summaryContent = document.getElementById('summaryContent');
+      summaryContent.innerHTML = `
+        <p>AI Deployment Name: ${document.getElementById('deploymentName').value}</p>
+        <p>Organization Name: ${document.getElementById('organizationName').value}</p>
+        <p>Email Address: ${document.getElementById('emailAddress').value}</p>
+        <p>Region: ${document.getElementById('deploymentRegion').value}</p>
+        <p>Sensitive Data: ${document.getElementById('sensitiveData').value}</p>
+        <p>Risk Level: ${document.getElementById('riskLevel').value}</p>
+        <p>Security Measures: ${document.getElementById('securityMeasures').value}</p>
+        <p>Encryption: ${document.getElementById('encryption').value}</p>
+        <p>Data Residency Compliance: ${document.getElementById('dataResidencyCompliance').value}</p>
+        <p>Risk Assessment: ${document.getElementById('riskAssessment').value}</p>
+        <p>Compliance Audit: ${document.getElementById('audit').value}</p>
+      `;
+      showSection('summary');
+    }
+
+    function submitForm() {
+      alert("Form submitted successfully.");
+    }
+  </script>
+</body>
+</html>
+ 
+ 

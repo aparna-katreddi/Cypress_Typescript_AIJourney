@@ -1,0 +1,18 @@
+{"complianceMeasuresInvalidTestData":[ 
+  
+{
+    "name": "TEST",                      
+    "organization": "Organization A",              
+    "email": "user2@example.com",                      
+    "region": "US",                     
+    "sensitiveData": "No",              
+    "riskLevel": "High",                  
+    "securityMeasures": "Encryption",           
+    "encryption": "Yes",                 
+    "dataResidencyCompliance": "",    
+    "riskAssessment": "No",             
+    "audit": "No"                       
+  }
+
+]
+}

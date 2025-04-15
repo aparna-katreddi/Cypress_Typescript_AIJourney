@@ -1,0 +1,68 @@
+{"dataSecurityInvalidTestData":
+[{
+    "name": "Empty Security Measures, Encryption, Data Compliance",                      
+    "organization": "Organization A",              
+    "email": "user2@example.com",                      
+    "region": "US",                     
+    "sensitiveData": "No",              
+    "riskLevel": "High",                  
+    "securityMeasures": "",           
+    "encryption": "",                 
+    "dataResidencyCompliance": ""  ,
+    "error":"Security Measures cannot be empty."                               
+  },
+  {
+    "name": "Empty Envryption",                      
+    "organization": "Organization A",              
+    "email": "user2@example.com",                      
+    "region": "US",                     
+    "sensitiveData": "Yes",              
+    "riskLevel": "High",                  
+    "securityMeasures": "Encryption",           
+    "encryption": "",                 
+    "dataResidencyCompliance": "" ,
+    "error":"Encryption is recommended for sensitive data."                                
+  },
+  {
+    "name": "Empty Envryption",                      
+    "organization": "Organization A",              
+    "email": "user2@example.com",                      
+    "region": "US",                     
+    "sensitiveData": "Yes",              
+    "riskLevel": "High",                  
+    "securityMeasures": "Encryption",           
+    "encryption": "No",                 
+    "dataResidencyCompliance": "" ,
+    "error":"Encryption is recommended for sensitive data."                                
+  },
+  {
+    "name": "EU",                      
+    "organization": "Organization A",              
+    "email": "user2@example.com",                      
+    "region": "EU",                     
+    "sensitiveData": "Yes",              
+    "riskLevel": "High",                  
+    "securityMeasures": "Encryption",           
+    "encryption": "Yes",                 
+    "dataResidencyCompliance": "Yes" ,
+    "error":"Data Residency Compliance is required for EU region."                                
+  },
+  {
+    "name": "EU",                      
+    "organization": "Organization A",              
+    "email": "user2@example.com",                      
+    "region": "EU",                     
+    "sensitiveData": "Yes",              
+    "riskLevel": "High",                  
+    "securityMeasures": "Encryption",           
+    "encryption": "Yes",                 
+    "dataResidencyCompliance": "" ,
+    "error":"Data Residency Compliance is required for EU region."                                
+  }
+
+
+
+
+
+]
+}

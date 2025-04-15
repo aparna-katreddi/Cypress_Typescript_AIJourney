@@ -1,0 +1,32 @@
+{"aiRiskMngmtInvalidTestData":
+
+[ 
+      
+{
+    "name": "Missing Sensitive Data",                      
+    "organization": "Organization A",              
+    "email": "user2@example.com",                      
+    "region": "US",                     
+    "sensitiveData": "",              
+    "riskLevel": "High"                                       
+  },
+
+  {
+    "name": "Missing Risk Level",                      
+    "organization": "Organization A",              
+    "email": "user2@example.com",                      
+    "region": "US",                     
+    "sensitiveData": "Yes",              
+    "riskLevel": ""                                       
+  },
+  {
+    "name": "Missing sensitive data and Risk Level",                      
+    "organization": "Organization A",              
+    "email": "user2@example.com",                      
+    "region": "US",                     
+    "sensitiveData": "",              
+    "riskLevel": ""                                       
+  }
+
+]
+}
