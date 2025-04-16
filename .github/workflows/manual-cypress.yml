@@ -94,22 +94,39 @@ jobs:
             git commit -m "Add test report and update index for run ${{ github.run_id }}" || echo "No changes to commit"
             git push origin gh-pages
         
-        
     # Send Slack notification with the report URL
+
       - name: Send Slack Notification
         if: always()
         run: |
-         REPORT_FILE="${{ steps.extract-report.outputs.report_filename }}"
-         BASE_URL="https://${{ github.actor }}.github.io/Cypress_Typescript_AIJourney/reports"
-         REPORT_URL="${BASE_URL}/${REPORT_FILE}"
-         INDEX_URL="${BASE_URL}/index.html"
-
-         echo "Report URL: $REPORT_URL"
-         echo "Index URL: $INDEX_URL"
-
-         curl -X POST -H 'Content-type: application/json' --data @- ${{ secrets.SLACK_WEBHOOK_URL }} <<EOF
-         {
-           "text": "✅ *Cypress Test Run Completed!*\n\n🔗 *Latest Report:* <${REPORT_URL}>\n📄 *All Reports:* <${INDEX_URL}>"
-         }
-         EOF
+              REPORT_FILE="${{ steps.extract-report.outputs.report_filename }}"
+              BASE_URL="https://${{ github.actor }}.github.io/Cypress_Typescript_AIJourney/reports"
+              REPORT_URL="${BASE_URL}/${REPORT_FILE}"
+              INDEX_URL="${BASE_URL}/index.html"
+          
+              echo "Report URL: $REPORT_URL"
+              echo "Index URL: $INDEX_URL"
+              echo "Slack Webhook URL: ${{ secrets.SLACK_WEBHOOK_URL }}"
+              echo "GitHub Run ID: ${{ github.run_id }}"
+              echo "GitHub Actor: ${{ github.actor }}"
+              echo "GitHub Repository: ${{ github.repository }}"
+              echo "GitHub Ref: ${{ github.ref }}"
+              echo "GitHub Workflow: ${{ github.workflow }}"
+          
+              # Determine status emoji
+              if [ "${{ job.status }}" == "success" ]; then
+                STATUS_EMOJI="✅"
+                STATUS_MSG="*Cypress Test Run Passed!*"
+              else
+                STATUS_EMOJI="❌"
+                STATUS_MSG="*Cypress Test Run Failed!*"
+              fi
+          
+              echo "Job status: ${{ job.status }}"
+              echo "Slack message: $STATUS_EMOJI $STATUS_MSG"
+          
+              curl -X POST -H 'Content-type: application/json' \
+                --data "{\"text\": \"$STATUS_EMOJI $STATUS_MSG\n🔗 *Latest Report:* <${REPORT_URL}>\n📄 *All Reports:* <${INDEX_URL}>\"}" \
+                ${{ secrets.SLACK_WEBHOOK_URL }}
+          
     
