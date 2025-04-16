@@ -52,7 +52,7 @@ jobs:
         run: |
           REPORT_FILE=$(ls cypress/reports/AI_Journey_Reports/ | grep -E '^AI_Journey_Test_Results_Report.*\.html$' | tail -n 1)
           echo "Report filename is $REPORT_FILE"
-          echo "report_filename=$REPORT_FILE" >> $GITHUB_ENV  # Using $GITHUB_ENV for environment variable
+          echo "report_filename=$REPORT_FILE" >> $GITHUB_OUTPUT  
 
       - name: Upload Cypress Mochawesome HTML Report
         if: always()
