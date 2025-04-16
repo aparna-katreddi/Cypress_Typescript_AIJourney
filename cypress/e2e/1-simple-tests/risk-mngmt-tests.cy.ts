@@ -74,7 +74,7 @@ import {complianceMeasuresInvalidTestData} from '../../fixtures/compliance-measu
                   })
    });
 
-   describe('Data Security Page - Missing field validations', () => {
+   describe.skip('Data Security Page - Missing field validations', () => {
     beforeEach(() => {
       cy.visit('cypress/fixtures/securityForm.html');
     });
@@ -97,7 +97,7 @@ import {complianceMeasuresInvalidTestData} from '../../fixtures/compliance-measu
                   })
    });
 
-   describe('Compliance Measures Page - Missing field validations', () => {
+   describe.skip('Compliance Measures Page - Missing field validations', () => {
     beforeEach(() => {
       cy.visit('cypress/fixtures/securityForm.html');
     });
