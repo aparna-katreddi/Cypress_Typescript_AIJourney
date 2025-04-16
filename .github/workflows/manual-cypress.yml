@@ -61,24 +61,37 @@ jobs:
           name: mochawesome-report
           path: cypress/reports/AI_Journey_Reports/*.html
 
-      - name: Upload HTML report to gh-pages
-        if: always()  # 👈 ensures this step always runs, even if Cypress tests fail
+      - name: Upload all reports to gh-pages and update index
+        if: always()
         run: |
-          mkdir -p temp-reports
-          cp cypress/reports/AI_Journey_Reports/*.html temp-reports/
-
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-
-          git fetch
-          git switch gh-pages || git checkout --orphan gh-pages
-
-          mkdir -p reports
-          mv temp-reports/*.html reports/
-
-          git add reports
-          git commit -m "Add report from ${{ github.run_id }} at $(date)"
-          git push origin gh-pages
+            git fetch
+            git switch gh-pages || git checkout --orphan gh-pages
+  
+            mkdir -p reports
+  
+            # Copy all existing reports to keep them
+            cp -r reports temp-old || true
+  
+            # Copy new report(s)
+            cp cypress/reports/AI_Journey_Reports/*.html reports/
+  
+            # Regenerate index.html
+            INDEX_FILE="reports/index.html"
+            echo "<html><body><h1>Cypress Test Reports</h1><ul>" > $INDEX_FILE
+  
+            for file in reports/*.html; do
+              filename=$(basename "$file")
+              echo "<li><a href=\"$filename\">$filename</a></li>" >> $INDEX_FILE
+            done
+  
+            echo "</ul></body></html>" >> $INDEX_FILE
+  
+            git add reports
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            git commit -m "Add test report and update index for run ${{ github.run_id }}" || echo "No changes to commit"
+            git push origin gh-pages
+  
 
         # Generate the index.html file to list all reports
       - name: Generate index.html for Reports
