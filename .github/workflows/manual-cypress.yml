@@ -95,19 +95,21 @@ jobs:
             git push origin gh-pages
         
         
-  
-
-   
-
-     
-
-      # Send Slack notification with the report URL
+    # Send Slack notification with the report URL
       - name: Send Slack Notification
         if: always()
         run: |
-              REPORT_FILE="${{ steps.extract-report.outputs.report_filename }}"
-              REPORT_URL="https://${{ github.actor }}.github.io/Cypress_Typescript_AIJourney/reports/${REPORT_FILE}"
-              echo "Full report URL: $REPORT_URL"
-              curl -X POST -H 'Content-type: application/json' \
-              --data "{\"text\": \"✅ Cypress Test Run Completed! View the latest test report: $REPORT_URL\"}" \
-              ${{ secrets.SLACK_WEBHOOK_URL }}
+         REPORT_FILE="${{ steps.extract-report.outputs.report_filename }}"
+         BASE_URL="https://${{ github.actor }}.github.io/Cypress_Typescript_AIJourney/reports"
+         REPORT_URL="${BASE_URL}/${REPORT_FILE}"
+         INDEX_URL="${BASE_URL}/index.html"
+
+         echo "Report URL: $REPORT_URL"
+         echo "Index URL: $INDEX_URL"
+
+         curl -X POST -H 'Content-type: application/json' --data @- ${{ secrets.SLACK_WEBHOOK_URL }} <<EOF
+         {
+           "text": "✅ *Cypress Test Run Completed!*\n\n🔗 *Latest Report:* <${REPORT_URL}>\n📄 *All Reports:* <${INDEX_URL}>"
+         }
+         EOF
+    
