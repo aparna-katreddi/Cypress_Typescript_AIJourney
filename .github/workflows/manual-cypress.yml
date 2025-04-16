@@ -66,59 +66,40 @@ jobs:
         run: |
             git fetch
             git switch gh-pages || git checkout --orphan gh-pages
-  
+        
             mkdir -p reports
-  
-            # Copy all existing reports to keep them
-            cp -r reports temp-old || true
-  
-            # Copy new report(s)
+        
+            # Keep all old reports
+            cp -r reports/ temp-reports || true
+        
+            # Copy new reports
             cp cypress/reports/AI_Journey_Reports/*.html reports/
-  
-            # Regenerate index.html
+        
+            # Generate index.html with all reports
             INDEX_FILE="reports/index.html"
-            echo "<html><body><h1>Cypress Test Reports</h1><ul>" > $INDEX_FILE
-  
-            for file in reports/*.html; do
+            echo "<!DOCTYPE html><html><head><title>Test Reports</title></head><body>" > $INDEX_FILE
+            echo "<h1>Cypress Test Reports</h1><ul>" >> $INDEX_FILE
+        
+            for file in $(ls reports/AI_Journey_Test_Results_Report_*.html | sort -r); do
               filename=$(basename "$file")
               echo "<li><a href=\"$filename\">$filename</a></li>" >> $INDEX_FILE
             done
-  
+        
             echo "</ul></body></html>" >> $INDEX_FILE
-  
-            git add reports
+        
             git config user.name "github-actions"
             git config user.email "github-actions@github.com"
+        
+            git add reports
             git commit -m "Add test report and update index for run ${{ github.run_id }}" || echo "No changes to commit"
             git push origin gh-pages
+        
+        
   
 
-        # Generate the index.html file to list all reports
-      - name: Generate index.html for Reports
-        if: always()
-        run: |
-          REPORT_FILES=$(ls cypress/reports/AI_Journey_Reports/ | grep -E '^AI_Journey_Test_Results_Report.*\.html$')
-          echo "<!DOCTYPE html><html><head><title>Test Reports</title></head><body><h1>Cypress Test Reports</h1><ul>" > cypress/reports/AI_Journey_Reports/index.html
-          for file in $REPORT_FILES; do
-            echo "<li><a href='${file}'>Report - ${file}</a></li>" >> cypress/reports/AI_Journey_Reports/index.html
-          done
-          echo "</ul></body></html>" >> cypress/reports/AI_Journey_Reports/index.html
+   
 
-      # Upload the index.html file to gh-pages
-      - name: Upload index.html to gh-pages
-        if: always()
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git fetch
-          git switch gh-pages || git checkout --orphan gh-pages
-
-          mkdir -p reports
-          cp cypress/reports/AI_Journey_Reports/index.html reports/
-
-          git add reports/index.html
-          git commit -m "Update index.html with new test reports"
-          git push origin gh-pages
+     
 
       # Send Slack notification with the report URL
       - name: Send Slack Notification
