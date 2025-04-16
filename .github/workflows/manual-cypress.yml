@@ -82,6 +82,7 @@ jobs:
 
         # Generate the index.html file to list all reports
       - name: Generate index.html for Reports
+        if: always()
         run: |
           REPORT_FILES=$(ls cypress/reports/AI_Journey_Reports/ | grep -E '^AI_Journey_Test_Results_Report.*\.html$')
           echo "<!DOCTYPE html><html><head><title>Test Reports</title></head><body><h1>Cypress Test Reports</h1><ul>" > cypress/reports/AI_Journey_Reports/index.html
@@ -92,6 +93,7 @@ jobs:
 
       # Upload the index.html file to gh-pages
       - name: Upload index.html to gh-pages
+        if: always()
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
